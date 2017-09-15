@@ -1,7 +1,7 @@
 <template>
   <div class="error-page window-height window-width bg-light column items-center no-wrap">
     <div class="error-code bg-primary flex items-center justify-center">
-      404
+      Not Found
     </div>
     <div>
       <div class="error-card shadow-4 bg-white column items-center justify-center no-wrap">

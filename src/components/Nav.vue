@@ -1,9 +1,9 @@
 <script>
-  import { QToolbar, QToolbarTitle, QBtn, QIcon } from 'quasar'
+  import { QToolbar, QToolbarTitle, QBtn } from 'quasar'
 
   export default {
 
-    components: { QToolbar, QToolbarTitle, QBtn, QIcon }
+    components: { QToolbar, QToolbarTitle, QBtn }
   }
 </script>
 <template>

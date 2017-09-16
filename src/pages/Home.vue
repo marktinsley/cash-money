@@ -1,18 +1,13 @@
 <script>
-  import { QLayout, QBtn, QIcon } from 'quasar'
-  import CmNav from '@/Nav'
+  import { QBtn } from 'quasar'
 
   export default {
-    components: { QLayout, QBtn, QIcon, CmNav }
+    components: { QBtn }
   }
 </script>
 
 <template>
-  <q-layout>
-    <cm-nav></cm-nav>
-
-    <div class="layout-padding logo-container non-selectable no-pointer-events">
-      <h1>Home</h1>
-    </div>
-  </q-layout>
+  <div class="layout-padding logo-container non-selectable no-pointer-events">
+    <h1>Home</h1>
+  </div>
 </template>

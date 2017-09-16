@@ -1,15 +1,20 @@
+<script>
+  import { QLayout, QBtn } from 'quasar'
+  import CmNav from '@/Nav'
+
+  export default {
+    components: { QLayout, QBtn, CmNav }
+  }
+</script>
+
 <template>
   <!-- Don't drop "q-app" class -->
   <div id="q-app">
-    <router-view />
+    <q-layout>
+      <cm-nav></cm-nav>
+      <router-view/>
+    </q-layout>
   </div>
 </template>
-
-<script>
-/*
- * Root component
- */
-export default {}
-</script>
 
 <style></style>

@@ -12,6 +12,7 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 
 import Vue from 'vue'
 import Quasar from 'quasar'
+import store from './store'
 import router from './router'
 
 Vue.config.productionTip = false
@@ -29,6 +30,7 @@ Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({
     el: '#q-app',
+    store,
     router,
     render: h => h(require('./App'))
   })

@@ -1,29 +1,46 @@
+import { Database } from 'library/Database'
+
 const state = {
-  all: [
-    {
-      id: 1,
-      name: 'Bank Checking'
-    },
-    {
-      id: 2,
-      name: 'Bank Savings'
-    },
-    {
-      id: 3,
-      name: 'Card 1'
-    }
-  ]
+  loaded: false,
+
+  all: []
 }
 
-const getters = {}
-
-const actions = {}
-
-const mutations = {}
-
-export default {
+const accounts = {
+  namespaced: true,
   state,
-  getters,
-  actions,
-  mutations
+
+  getters: {},
+
+  mutations: {
+    loading (state) {
+      state.loaded = false
+    },
+
+    loaded (state, { accounts }) {
+      state.all = accounts
+      state.loaded = true
+    }
+  },
+
+  actions: {
+    fetch ({ commit }) {
+      commit('loading')
+
+      const db = Database.getInstance()
+      db.get('testing')
+        .then(a => console.log(a))
+
+      window.setTimeout(() => commit('loaded', {
+        accounts:
+          [
+            { id: 1, name: 'Bank Checking' },
+            { id: 2, name: 'Bank Savings' },
+            { id: 3, name: 'Card 1' }
+          ]
+      }), 1000)
+    }
+  }
 }
+
+export { accounts }

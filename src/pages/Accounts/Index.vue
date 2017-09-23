@@ -1,10 +1,18 @@
 <script>
-  import { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator } from 'quasar'
+  import { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator, QSpinnerHourglass } from 'quasar'
 
   export default {
-    components: { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator },
+    components: { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator, QSpinnerHourglass },
+
+    created () {
+      this.$store.dispatch('accounts/fetch')
+    },
 
     computed: {
+      loaded () {
+        return this.$store.state.accounts.loaded
+      },
+
       accounts () {
         return this.$store.state.accounts.all
       }
@@ -19,22 +27,26 @@
         <h1>Accounts</h1>
       </div>
 
-      <q-btn icon="add" round color="positive" @click="$router.push({name: 'accounts.create'})">
-      </q-btn>
+      <q-spinner-hourglass v-if="!loaded" :size="40" color="primary"></q-spinner-hourglass>
 
-      <q-list>
-        <template v-for="account in accounts">
-          <q-item :key="account.id">
-            <q-item-main :label="account.name"></q-item-main>
-            <q-item-side right>
-              <q-btn color="primary" @click="$router.push({name: 'accounts.edit', params: {id: account.id}})">
-                Edit
-              </q-btn>
-            </q-item-side>
-          </q-item>
-          <q-item-separator></q-item-separator>
-        </template>
-      </q-list>
+      <template v-if="loaded">
+        <q-btn icon="add" round color="positive" @click="$router.push({name: 'accounts.create'})">
+        </q-btn>
+
+        <q-list>
+          <template v-for="account in accounts">
+            <q-item :key="account.id">
+              <q-item-main :label="account.name"></q-item-main>
+              <q-item-side right>
+                <q-btn color="primary" @click="$router.push({name: 'accounts.edit', params: {id: account.id}})">
+                  Edit
+                </q-btn>
+              </q-item-side>
+            </q-item>
+            <q-item-separator></q-item-separator>
+          </template>
+        </q-list>
+      </template>
     </div>
   </div>
 </template>

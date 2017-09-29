@@ -38,7 +38,7 @@
             <q-item :key="account.id">
               <q-item-main :label="account.name"></q-item-main>
               <q-item-side right>
-                <q-btn color="primary" @click="$router.push({name: 'accounts.edit', params: {id: account.id}})">
+                <q-btn color="primary" @click="$router.push({name: 'accounts.edit', params: {id: account._id}})">
                   Edit
                 </q-btn>
               </q-item-side>

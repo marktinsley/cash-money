@@ -10,7 +10,12 @@ const accounts = {
   namespaced: true,
   state,
 
-  getters: {},
+  getters: {
+    getAccountById: state => id => {
+      let account = state.all.find(account => account._id === id)
+      return account
+    }
+  },
 
   mutations: {
     loading (state) {
@@ -24,21 +29,42 @@ const accounts = {
   },
 
   actions: {
-    fetch ({ commit }) {
+    fetch ({ state, commit }) {
       commit('loading')
 
-      const db = Database.getInstance()
-      db.get('testing')
-        .then(a => console.log(a))
+      const db = Database.getInstance('accounts')
 
-      window.setTimeout(() => commit('loaded', {
-        accounts:
-          [
-            { id: 1, name: 'Bank Checking' },
-            { id: 2, name: 'Bank Savings' },
-            { id: 3, name: 'Card 1' }
-          ]
-      }), 1000)
+      db.allDocs({include_docs: true, descending: true}).then(accounts => {
+        commit('loaded', { accounts: accounts.rows.map(row => row.doc) })
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    saveAccount ({ state, commit }, account) {
+      const db = Database.getInstance('accounts')
+
+      console.log('account')
+      console.log(account)
+
+      // Create record if it doesn't exist
+      if (account._id === undefined) {
+        db.post(account).then(result => {
+          console.log('Created account')
+          console.log(result)
+        }).catch(err => {
+          console.error('couldn\'t create account')
+          console.error(err)
+        })
+      }
+      else {
+        db.put(account).then(result => {
+          console.log('Updated account')
+          console.log(result)
+        }).catch(err => {
+          console.error('Couldn\'t update account')
+          console.error(err)
+        })
+      }
     }
   }
 }

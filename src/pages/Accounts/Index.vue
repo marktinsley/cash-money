@@ -20,7 +20,6 @@
 
     methods: {
       isCurrentAccount: function (account) {
-        console.log(account)
         return this.$store.state.accounts.currentAccount._id === account._id
       }
     }
@@ -55,6 +54,11 @@
               <q-item-side right>
                 <q-btn color="secondary" @click="$router.push({name: 'accounts.edit', params: {id: account._id}})">
                   Edit
+                </q-btn>
+              </q-item-side>
+              <q-item-side right>
+                <q-btn color="negative" @click="$store.dispatch('accounts/deleteAccount',account)">
+                  Delete
                 </q-btn>
               </q-item-side>
             </q-item>

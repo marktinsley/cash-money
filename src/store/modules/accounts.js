@@ -48,9 +48,6 @@ const accounts = {
     saveAccount ({ state, commit }, account) {
       const db = Database.getInstance('accounts')
 
-      console.log('account')
-      console.log(account)
-
       // Create record if it doesn't exist
       if (account._id === undefined) {
         db.post(account).then(result => {
@@ -70,6 +67,20 @@ const accounts = {
           console.error(err)
         })
       }
+    },
+
+    deleteAccount ({ state, dispatch }, account) {
+      const db = Database.getInstance('accounts')
+
+      db.remove(account).then(result => {
+        console.log('Removed account')
+        console.log(result)
+      }).catch(err => {
+        console.log('Couldn\'t remove account')
+        console.error(err)
+      })
+
+      dispatch('fetch')
     }
   }
 }

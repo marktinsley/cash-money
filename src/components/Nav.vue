@@ -11,7 +11,7 @@
     <q-toolbar-title>
       Cash Money
       <span slot="subtitle">
-        {{ $store.state.accounts.currentAccount.name }}
+        {{ $store.getters['accounts/getCurrentAccount'].name }}
       </span>
     </q-toolbar-title>
 

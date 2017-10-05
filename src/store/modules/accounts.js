@@ -2,7 +2,7 @@ import { Database } from 'library/Database'
 
 const state = {
   loaded: false,
-  currentAccount: {},
+  currentAccountId: null,
   all: []
 }
 
@@ -14,6 +14,16 @@ const accounts = {
     getAccountById: state => id => {
       let account = state.all.find(account => account._id === id)
       return account
+    },
+
+    getCurrentAccount: (state, getters) => {
+      const account = getters.getAccountById(state.currentAccountId)
+      if (account) {
+        return account
+      }
+      else {
+        return {}
+      }
     }
   },
 
@@ -27,8 +37,8 @@ const accounts = {
       state.loaded = true
     },
 
-    changeAccount (state, account) {
-      state.currentAccount = account
+    changeAccount (state, accountId) {
+      state.currentAccountId = accountId
     }
   },
 
@@ -69,7 +79,7 @@ const accounts = {
       }
     },
 
-    deleteAccount ({ state, dispatch }, account) {
+    deleteAccount ({ state, commit, dispatch }, account) {
       const db = Database.getInstance('accounts')
 
       db.remove(account).then(result => {
@@ -80,6 +90,7 @@ const accounts = {
         console.error(err)
       })
 
+      commit('changeAccount', null)
       dispatch('fetch')
     }
   }

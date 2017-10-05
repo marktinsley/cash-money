@@ -20,7 +20,7 @@
 
     methods: {
       isCurrentAccount: function (account) {
-        return this.$store.state.accounts.currentAccount._id === account._id
+        return this.$store.state.accounts.currentAccountId === account._id
       }
     }
   }
@@ -47,7 +47,7 @@
                 <q-icon name="star" />
               </q-item-side>
               <q-item-side right>
-                <q-btn color="primary" @click="$store.commit('accounts/changeAccount', account)">
+                <q-btn color="primary" @click="$store.commit('accounts/changeAccount', account._id)">
                   Select
                 </q-btn>
               </q-item-side>

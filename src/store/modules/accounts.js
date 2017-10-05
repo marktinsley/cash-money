@@ -2,7 +2,7 @@ import { Database } from 'library/Database'
 
 const state = {
   loaded: false,
-
+  currentAccount: {},
   all: []
 }
 
@@ -25,6 +25,10 @@ const accounts = {
     loaded (state, { accounts }) {
       state.all = accounts
       state.loaded = true
+    },
+
+    changeAccount (state, account) {
+      state.currentAccount = account
     }
   },
 
@@ -40,6 +44,7 @@ const accounts = {
         console.error(err)
       })
     },
+
     saveAccount ({ state, commit }, account) {
       const db = Database.getInstance('accounts')
 

@@ -1,8 +1,8 @@
 <script>
-  import { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator, QSpinnerHourglass } from 'quasar'
+  import { QBtn, QList, QIcon, QItem, QItemSide, QItemMain, QItemSeparator, QSpinner } from 'quasar'
 
   export default {
-    components: { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator, QSpinnerHourglass },
+    components: { QBtn, QList, QIcon, QItem, QItemSide, QItemMain, QItemSeparator, QSpinner },
 
     created () {
       this.$store.dispatch('accounts/fetch')
@@ -16,6 +16,13 @@
       accounts () {
         return this.$store.state.accounts.all
       }
+    },
+
+    methods: {
+      isCurrentAccount: function (account) {
+        console.log(account)
+        return this.$store.state.accounts.currentAccount._id === account._id
+      }
     }
   }
 </script>
@@ -27,7 +34,7 @@
         <h1>Accounts</h1>
       </div>
 
-      <q-spinner-hourglass v-if="!loaded" :size="40" color="primary"></q-spinner-hourglass>
+      <q-spinner v-if="!loaded" :size="40" color="primary"></q-spinner>
 
       <template v-if="loaded">
         <q-btn icon="add" round color="positive" @click="$router.push({name: 'accounts.create'})">
@@ -37,8 +44,16 @@
           <template v-for="account in accounts">
             <q-item :key="account.id">
               <q-item-main :label="account.name"></q-item-main>
+              <q-item-side v-if="isCurrentAccount(account)" left>
+                <q-icon name="star" />
+              </q-item-side>
               <q-item-side right>
-                <q-btn color="primary" @click="$router.push({name: 'accounts.edit', params: {id: account._id}})">
+                <q-btn color="primary" @click="$store.commit('accounts/changeAccount', account)">
+                  Select
+                </q-btn>
+              </q-item-side>
+              <q-item-side right>
+                <q-btn color="secondary" @click="$router.push({name: 'accounts.edit', params: {id: account._id}})">
                   Edit
                 </q-btn>
               </q-item-side>

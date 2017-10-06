@@ -55,7 +55,7 @@ const accounts = {
       })
     },
 
-    saveAccount ({ state, commit }, account) {
+    saveAccount ({ state, commit, dispatch }, account) {
       const db = Database.getInstance('accounts')
 
       // Create record if it doesn't exist
@@ -77,6 +77,8 @@ const accounts = {
           console.error(err)
         })
       }
+
+      dispatch('fetch')
     },
 
     deleteAccount ({ state, commit, dispatch }, account) {

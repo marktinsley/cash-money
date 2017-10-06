@@ -4,16 +4,15 @@
   export default {
     components: { QBtn, QList, QIcon, QItem, QItemSide, QItemMain, QItemSeparator, QSpinner },
 
-    created () {
-      this.$store.dispatch('accounts/fetch')
-    },
-
     computed: {
       loaded () {
         return this.$store.state.accounts.loaded
       },
 
       accounts () {
+        if (this.$store.state.accounts.all.length === 0) {
+          this.$store.dispatch('accounts/fetch')
+        }
         return this.$store.state.accounts.all
       }
     },

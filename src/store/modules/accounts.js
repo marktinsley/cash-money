@@ -98,4 +98,4 @@ const accounts = {
   }
 }
 
-export { accounts }
+export default accounts

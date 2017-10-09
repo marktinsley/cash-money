@@ -7,7 +7,7 @@ function load (component) {
   return () => import(`pages/${component}.vue`)
 }
 
-export default new VueRouter({
+let router = new VueRouter({
   routes: [
     { path: '/', name: 'home', component: load('Home') },
 
@@ -21,3 +21,15 @@ export default new VueRouter({
     { path: '*', component: load('NotFound') }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  document.documentElement.scrollTop = 0
+  document.body.scrollTop = 0
+
+  // if (to.meta) {
+  //   showcaseStore.set(to.meta)
+  // }
+  next()
+})
+
+export default router

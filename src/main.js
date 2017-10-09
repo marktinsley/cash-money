@@ -14,6 +14,9 @@ import Vue from 'vue'
 import Quasar from 'quasar'
 import store from './store'
 import router from './router'
+import { sync } from 'vuex-router-sync'
+
+sync(store, router)
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework

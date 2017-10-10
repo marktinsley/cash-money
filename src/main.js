@@ -29,6 +29,10 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/fontawesome'
 // import 'quasar-extras/animate'
 
+// Quasar transitions
+// TODO: Only include the ones that we use
+import 'quasar-extras/animate'
+
 Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({

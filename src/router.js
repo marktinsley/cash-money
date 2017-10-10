@@ -15,6 +15,13 @@ let router = new VueRouter({
     { path: '/accounts/create', name: 'accounts.create', component: load('Accounts/Form') },
     { path: '/accounts/:id/edit', name: 'accounts.edit', component: load('Accounts/Form') },
 
+    {
+      path: '/settings',
+      name: 'settings',
+      meta: { title: 'Settings', icon: 'settings' },
+      component: load('Settings')
+    },
+
     { path: '/budget', name: 'budget.index', component: load('Budget/Index') },
 
     { path: '/import', name: 'import', component: load('Import') },

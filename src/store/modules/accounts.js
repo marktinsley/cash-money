@@ -2,6 +2,7 @@ import { Database } from 'library/Database'
 
 const state = {
   loaded: false,
+  loading: false,
   currentAccountId: null,
   all: []
 }
@@ -29,12 +30,14 @@ const accounts = {
 
   mutations: {
     loading (state) {
+      state.loading = true
       state.loaded = false
     },
 
     loaded (state, { accounts }) {
       state.all = accounts
       state.loaded = true
+      state.loading = false
     },
 
     changeAccount (state, accountId) {
@@ -53,6 +56,12 @@ const accounts = {
       }).catch(err => {
         console.error(err)
       })
+    },
+
+    ensureLoaded ({ state, commit, dispatch }) {
+      if (state.loaded === false && state.loading === false) {
+        dispatch('fetch')
+      }
     },
 
     saveAccount ({ state, commit, dispatch }, account) {

@@ -4,15 +4,12 @@
   export default {
     components: { QBtn, QList, QIcon, QItem, QItemSide, QItemMain, QItemSeparator, QSpinner },
 
-    computed: {
-      loaded () {
-        return this.$store.state.accounts.loaded
-      },
+    created () {
+      this.$store.dispatch('accounts/ensureLoaded')
+    },
 
+    computed: {
       accounts () {
-        if (this.$store.state.accounts.all.length === 0) {
-          this.$store.dispatch('accounts/fetch')
-        }
         return this.$store.state.accounts.all
       }
     },
@@ -32,9 +29,9 @@
         <h1>Accounts</h1>
       </div>
 
-      <q-spinner v-if="!loaded" :size="40" color="primary"></q-spinner>
+      <q-spinner v-if="$store.state.accounts.loading" :size="40" color="primary"></q-spinner>
 
-      <template v-if="loaded">
+      <template v-if="$store.state.accounts.loaded">
         <q-btn icon="add" round color="positive" @click="$router.push({name: 'accounts.create'})">
         </q-btn>
 

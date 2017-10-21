@@ -10,6 +10,9 @@
   <q-toolbar slot="header">
     <q-toolbar-title>
       Cash Money
+      <span slot="subtitle">
+        {{ $store.getters['accounts/getCurrentAccount'].name }}
+      </span>
     </q-toolbar-title>
 
     <q-btn flat @click="$router.push({name: 'home'})">

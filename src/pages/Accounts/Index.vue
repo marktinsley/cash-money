@@ -1,20 +1,22 @@
 <script>
-  import { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator, QSpinnerHourglass } from 'quasar'
+  import { QBtn, QList, QIcon, QItem, QItemSide, QItemMain, QItemSeparator, QSpinner } from 'quasar'
 
   export default {
-    components: { QBtn, QList, QItem, QItemSide, QItemMain, QItemSeparator, QSpinnerHourglass },
+    components: { QBtn, QList, QIcon, QItem, QItemSide, QItemMain, QItemSeparator, QSpinner },
 
     created () {
-      this.$store.dispatch('accounts/fetch')
+      this.$store.dispatch('accounts/ensureLoaded')
     },
 
     computed: {
-      loaded () {
-        return this.$store.state.accounts.loaded
-      },
-
       accounts () {
         return this.$store.state.accounts.all
+      }
+    },
+
+    methods: {
+      isCurrentAccount: function (account) {
+        return this.$store.state.accounts.currentAccountId === account._id
       }
     }
   }
@@ -27,9 +29,9 @@
         <h1>Accounts</h1>
       </div>
 
-      <q-spinner-hourglass v-if="!loaded" :size="40" color="primary"></q-spinner-hourglass>
+      <q-spinner v-if="$store.state.accounts.loading" :size="40" color="primary"></q-spinner>
 
-      <template v-if="loaded">
+      <template v-if="$store.state.accounts.loaded">
         <q-btn icon="add" round color="positive" @click="$router.push({name: 'accounts.create'})">
         </q-btn>
 
@@ -37,9 +39,22 @@
           <template v-for="account in accounts">
             <q-item :key="account.id">
               <q-item-main :label="account.name"></q-item-main>
+              <q-item-side v-if="isCurrentAccount(account)" left>
+                <q-icon name="star" />
+              </q-item-side>
               <q-item-side right>
-                <q-btn color="primary" @click="$router.push({name: 'accounts.edit', params: {id: account.id}})">
+                <q-btn color="primary" @click="$store.commit('accounts/changeAccount', account._id)">
+                  Select
+                </q-btn>
+              </q-item-side>
+              <q-item-side right>
+                <q-btn color="secondary" @click="$router.push({name: 'accounts.edit', params: {id: account._id}})">
                   Edit
+                </q-btn>
+              </q-item-side>
+              <q-item-side right>
+                <q-btn color="negative" @click="$store.dispatch('accounts/deleteAccount',account)">
+                  Delete
                 </q-btn>
               </q-item-side>
             </q-item>

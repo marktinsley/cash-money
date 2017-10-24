@@ -3,29 +3,62 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function load (component) {
+function loadPage (component) {
   return () => import(`pages/${component}.vue`)
+}
+
+function loadComponent (component) {
+  return () => import(`components/${component}.vue`)
 }
 
 let router = new VueRouter({
   routes: [
-    { path: '/', name: 'home', component: load('Home') },
+    { path: '/', name: 'home', redirect: '/accounts' },
 
-    { path: '/accounts', name: 'accounts.index', component: load('Accounts/Index') },
-    { path: '/accounts/create', name: 'accounts.create', component: load('Accounts/Form') },
-    { path: '/accounts/:id/edit', name: 'accounts.edit', component: load('Accounts/Form') },
+    {
+      path: '/accounts',
+      meta: {
+        title: 'Accounts',
+        icon: 'account box'
+      },
+      components: {
+        default: loadPage('Accounts/Index'),
+        naviation: loadComponent('DefaultNav'),
+        header: loadComponent('AccountSelectHeader')
+      },
+      children: [
+        { path: '', name: 'accounts.index', component: loadPage('Accounts/List') },
+        { path: 'create', name: 'accounts.create', component: loadPage('Accounts/Form') },
+        { path: ':id/edit', name: 'accounts.edit', component: loadPage('Accounts/Form') }
+      ]
+    },
 
     {
       path: '/settings',
       name: 'settings',
-      meta: { title: 'Settings', icon: 'settings' },
-      component: load('Settings')
+      meta: {
+        title: 'Settings',
+        icon: 'settings',
+        backButton: true
+      },
+      components: {
+        default: loadPage('Settings/Index'),
+        navigation: loadComponent('DefaultNav'),
+        header: loadComponent('DefaultHeader')
+      },
+      children: [
+        {
+          path: 'edit-account/:id',
+          name: 'settings.edit-account',
+          component: loadPage('Settings/EditAccount')
+        }
+      ]
     },
 
-    { path: '/budget', name: 'budget.index', component: load('Budget/Index') },
+    { path: '/budget', name: 'budget.index', component: loadPage('Budget/Index') },
 
-    { path: '/import', name: 'import', component: load('Import') },
-    { path: '*', component: load('NotFound') }
+    { path: '/import', name: 'import', component: loadPage('Import') },
+    { path: '*', component: loadPage('NotFound') }
   ]
 })
 

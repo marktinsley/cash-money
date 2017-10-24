@@ -16,6 +16,7 @@ import store from './store'
 import router from './router'
 import { sync } from 'vuex-router-sync'
 
+// Sync the Vue Router and the Vuex Store
 sync(store, router)
 
 Vue.config.productionTip = false

@@ -17,10 +17,6 @@ let router = new VueRouter({
 
     {
       path: '/accounts',
-      meta: {
-        title: 'Accounts',
-        icon: 'account box'
-      },
       components: {
         default: loadPage('Accounts/Index'),
         naviation: loadComponent('DefaultNav'),
@@ -36,11 +32,6 @@ let router = new VueRouter({
     {
       path: '/settings',
       name: 'settings',
-      meta: {
-        title: 'Settings',
-        icon: 'settings',
-        backButton: true
-      },
       components: {
         default: loadPage('Settings/Index'),
         navigation: loadComponent('DefaultNav'),
@@ -48,8 +39,8 @@ let router = new VueRouter({
       },
       children: [
         {
-          path: 'edit-account/:id',
-          name: 'settings.edit-account',
+          path: 'account/:id',
+          name: 'settings.account',
           component: loadPage('Settings/EditAccount')
         }
       ]

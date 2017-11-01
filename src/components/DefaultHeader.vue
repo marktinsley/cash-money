@@ -8,17 +8,19 @@
 
 <template>
   <q-toolbar>
-    <q-btn flat v-if="$route.meta.backButton" @click="$router.back()">
+    <q-btn flat v-if="$root.meta.header && $root.meta.header.backButton"
+        @click="$router.back()">
       <q-icon name="chevron left"/>
     </q-btn>
     <q-toolbar-title>
-      <q-icon v-if="$route.meta.icon" :name="$route.meta.icon"/>
-      {{ $route.meta.title }}
-      <span slot="subtitle">
-        {{ $route.meta.subtitle }}
+      <q-icon v-if="$root.meta.header && $root.meta.header.icon"
+          :name="$root.meta.header.icon"/>
+      <span v-if="$root.meta.header && $root.meta.header.title">
+        {{ $root.meta.header.title }}
+      </span>
+      <span v-if="$root.meta.header && $root.meta.header.subtitle" slot="subtitle">
+        {{ $root.meta.header.subtitle }}
       </span>
     </q-toolbar-title>
-
-    <!-- TODO: Should add left and right drawer button's tied to page meta later -->
   </q-toolbar>
 </template>

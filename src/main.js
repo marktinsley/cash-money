@@ -15,12 +15,22 @@ import Quasar from 'quasar'
 import store from './store'
 import router from './router'
 import { sync } from 'vuex-router-sync'
+import VueDocument, { titleInjector, metaInjector } from 'vue-document'
 
 // Sync the Vue Router and the Vuex Store
 sync(store, router)
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
+
+// vue-document injector for site-wide metadata
+function appMetaInjector (document) {
+  this.$root.meta = this.$root.$document
+}
+
+Vue.use(VueDocument, {
+  injector: [titleInjector, metaInjector, appMetaInjector]
+})
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')
@@ -38,6 +48,10 @@ Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({
     el: '#q-app',
+    // App-wide metadata
+    data: () => ({
+      meta: null
+    }),
     store,
     router,
     render: h => h(require('./App'))

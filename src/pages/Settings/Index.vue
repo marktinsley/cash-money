@@ -1,6 +1,5 @@
 <script>
 import {
-  Dialog,
   QItem,
   QBtn,
   QIcon,
@@ -34,21 +33,14 @@ export default {
     }
   },
 
-  methods: {
-    addAccount () {
-      Dialog.create({
-        title: 'warning',
-        message: 'you are about to run out of disk space',
-        buttons: [
-          'Cancel',
-          {
-            label: 'Empty trash bin',
-            handler: () => {
-              console.log('Emptied')
-            }
-          }
-        ]
-      })
+  document: {
+    head: {
+      title: 'Settings'
+    },
+    header: {
+      title: 'Settings',
+      icon: 'settings',
+      backButton: true
     }
   }
 }
@@ -59,7 +51,7 @@ export default {
     <q-list link>
       <q-item>
         <q-item-side left>
-          <q-icon name="lock" />
+          <q-icon name="account box" style="font-size: 1.5em" />
         </q-item-side>
         <q-item-main><q-list-header>Accounts</q-list-header></q-item-main>
         <q-item-side right>
@@ -68,7 +60,7 @@ export default {
       </q-item>
       <q-item-separator />
       <template v-for="account in accounts">
-        <q-item :key="account.id">
+        <q-item :key="account.id" @click="$router.push({name: 'settings.account', params: {id: account._id }})">
           <q-item-main :label="account.name"></q-item-main>
           <q-item-side right>
             <q-icon name='chevron_right' />

@@ -1,54 +1,70 @@
 <script>
 import {
-  Dialog,
-  QItem,
-  QBtn,
-  QIcon,
-  QItemMain,
-  QItemSeparator,
-  QItemSide,
-  QItemTile,
-  QList,
-  QListHeader
+  QField,
+  QInput,
+  QBtn
 } from 'quasar'
 
 export default {
   components: {
-    QItem,
-    QBtn,
-    QIcon,
-    QItemMain,
-    QItemSeparator,
-    QItemSide,
-    QItemTile,
-    QList,
-    QListHeader
+    QField,
+    QInput,
+    QBtn
   },
 
+  data: () => ({
+    nameChanged: false,
+    newName: ''
+  }),
+
   computed: {
-    accounts () {
-      if (this.$store.state.accounts.all.length === 0) {
-        this.$store.dispatch('accounts/fetch')
+    account () {
+      this.$store.dispatch('accounts/ensureLoaded')
+      return this.$store.getters['accounts/getAccountById'](this.$route.params.id)
+    },
+    accountName: {
+      get () {
+        if (this.nameChanged === false) {
+          if (this.account !== undefined) {
+            return this.account.name
+          }
+          else {
+            return 'Untitled'
+          }
+        }
+        else {
+          return this.newName
+        }
+      },
+      set (value) {
+        if (this.nameChanged === false) {
+          this.nameChanged = true
+        }
+        this.newName = value
       }
-      return this.$store.state.accounts.all
     }
   },
 
   methods: {
-    addAccount () {
-      Dialog.create({
-        title: 'warning',
-        message: 'you are about to run out of disk space',
-        buttons: [
-          'Cancel',
-          {
-            label: 'Empty trash bin',
-            handler: () => {
-              console.log('Emptied')
-            }
-          }
-        ]
-      })
+    saveAccount () {
+      this.$store.dispatch('accounts/saveAccount', {...this.account, name: this.accountName})
+      this.$router.back()
+    },
+    deleteAccount () {
+      this.$store.dispatch('accounts/deleteAccount', this.account)
+      this.$router.back()
+    }
+  },
+
+  document () {
+    return {
+      header: {
+        title: this.accountName + ' - Account Settings',
+        backButton: true
+      },
+      head: {
+        title: this.accountName + ' - Account Settings'
+      }
     }
   }
 }
@@ -56,31 +72,14 @@ export default {
 
 <template>
   <div class="layout-padding">
-    <q-list link>
-      <q-item>
-        <q-item-side left>
-          <q-icon name="lock" />
-        </q-item-side>
-        <q-item-main><q-list-header>Accounts</q-list-header></q-item-main>
-        <q-item-side right>
-          <q-btn color="positive" round small icon="add" />
-        </q-item-side>
-      </q-item>
-      <q-item-separator />
-      <template v-for="account in accounts">
-        <q-item :key="account.id">
-          <q-item-main :label="account.name"></q-item-main>
-          <q-item-side right>
-            <q-icon name='chevron_right' />
-          </q-item-side>
-        </q-item>
-        <q-item-separator />
-      </template>
-    </q-list>
+    <q-field label="AccountName">
+      <q-input v-model="accountName" />
+    </q-field>
+
+    <q-btn color="primary" @click="saveAccount">Save</q-btn>
+    <q-btn @click="$router.back()">Cancel</q-btn>
+    <q-btn color="negative" @click="deleteAccount">
+      Delete
+    </q-btn>
   </div>
 </template>
-
-<style lang="stylus">
-.q-item-main .q-list-header
-  margin-left: -30px
-</style>

@@ -18,8 +18,8 @@ let router = new VueRouter({
     {
       path: '/accounts',
       components: {
-        default: loadPage('Accounts/Index'),
-        naviation: loadComponent('DefaultNav'),
+        default: loadPage('RouterView'),
+        navigation: loadComponent('DefaultNav'),
         header: loadComponent('AccountSelectHeader')
       },
       children: [
@@ -31,13 +31,16 @@ let router = new VueRouter({
 
     {
       path: '/settings',
-      name: 'settings',
       components: {
-        default: loadPage('Settings/Index'),
-        navigation: loadComponent('DefaultNav'),
+        default: loadPage('RouterView'),
         header: loadComponent('DefaultHeader')
       },
       children: [
+        {
+          path: '',
+          name: 'settings',
+          component: loadPage('Settings/Index')
+        },
         {
           path: 'account/:id',
           name: 'settings.account',

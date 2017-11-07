@@ -55,12 +55,18 @@ export default {
         </q-item-side>
         <q-item-main><q-list-header>Accounts</q-list-header></q-item-main>
         <q-item-side right>
-          <q-btn color="positive" round small icon="add" />
+          <q-btn color="positive"
+                 icon="add"
+                 round
+                 small
+                 @click="$router.push({name: 'settings.account.new'})"/>
         </q-item-side>
       </q-item>
       <q-item-separator />
       <template v-for="account in accounts">
-        <q-item :key="account.id" @click="$router.push({name: 'settings.account', params: {id: account._id }})">
+        <q-item :key="account.id"
+                @click="$router.push(
+                  {name: 'settings.account', params: {id: account._id }})">
           <q-item-main :label="account.name"></q-item-main>
           <q-item-side right>
             <q-icon name='chevron_right' />

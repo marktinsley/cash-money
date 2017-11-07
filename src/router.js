@@ -45,6 +45,11 @@ let router = new VueRouter({
           path: 'account/:id',
           name: 'settings.account',
           component: loadPage('Settings/EditAccount')
+        },
+        {
+          path: 'account/new',
+          name: 'settings.account.new',
+          component: loadPage('Settings/EditAccount')
         }
       ]
     },

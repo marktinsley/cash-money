@@ -18,7 +18,7 @@ let router = new VueRouter({
     {
       path: '/accounts',
       components: {
-        default: loadPage('RouterView'),
+        default: loadPage('LayoutRouterView'),
         navigation: loadComponent('DefaultNav'),
         header: loadComponent('AccountSelectHeader')
       },
@@ -32,7 +32,7 @@ let router = new VueRouter({
     {
       path: '/settings',
       components: {
-        default: loadPage('RouterView'),
+        default: loadPage('LayoutRouterView'),
         header: loadComponent('DefaultHeader')
       },
       children: [

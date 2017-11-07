@@ -1,14 +1,21 @@
 <script>
 import {
+  Dialog,
   QField,
+  QIcon,
   QInput,
+  QToolbar,
+  QToolbarTitle,
   QBtn
 } from 'quasar'
 
 export default {
   components: {
     QField,
+    QIcon,
     QInput,
+    QToolbar,
+    QToolbarTitle,
     QBtn
   },
 
@@ -51,8 +58,24 @@ export default {
       this.$router.back()
     },
     deleteAccount () {
-      this.$store.dispatch('accounts/deleteAccount', this.account)
-      this.$router.back()
+      Dialog.create({
+        title: 'Delete Account',
+        message: `Are you sure you want to delete account '${this.accountName}'?`,
+        buttons: [
+          {
+            label: 'Delete',
+            color: 'negative',
+            outline: true,
+            handler: () => {
+              this.$store.dispatch('accounts/deleteAccount', this.account)
+              this.$router.back()
+            }
+          },
+          {
+            label: 'Cancel'
+          }
+        ]
+      })
     }
   },
 
@@ -72,14 +95,17 @@ export default {
 
 <template>
   <div class="layout-padding">
-    <q-field label="AccountName">
-      <q-input v-model="accountName" />
+    <portal to="default-header--right">
+      <q-btn color="negative" @click="deleteAccount">
+        <q-icon name="delete" />
+      </q-btn>
+    </portal>
+    <q-field label="Account Name" :label-width="2">
+      <q-input v-model="accountName" placeholder="Name"/>
     </q-field>
-
-    <q-btn color="primary" @click="saveAccount">Save</q-btn>
-    <q-btn @click="$router.back()">Cancel</q-btn>
-    <q-btn color="negative" @click="deleteAccount">
-      Delete
-    </q-btn>
+    <div style="float: right;">
+      <q-btn color="primary" icon="check" @click="saveAccount">Save</q-btn>
+      <q-btn color="secondary" icon="cancel" @click="$router.back()">Cancel</q-btn>
+    </div>
   </div>
 </template>

@@ -16,6 +16,7 @@ import store from './store'
 import router from './router'
 import { sync } from 'vuex-router-sync'
 import VueDocument, { titleInjector, metaInjector } from 'vue-document'
+import PortalVue from '@zicklag/portal-vue'
 
 // Sync the Vue Router and the Vuex Store
 sync(store, router)
@@ -31,6 +32,11 @@ function appMetaInjector (document) {
 Vue.use(VueDocument, {
   injector: [titleInjector, metaInjector, appMetaInjector]
 })
+
+// We import this globally. I don't think that this is a package size
+// disadvantage because the global App layout uses portals and is required on
+// every page anyway.
+Vue.use(PortalVue)
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')

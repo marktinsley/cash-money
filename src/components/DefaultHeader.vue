@@ -12,6 +12,7 @@
         @click="$router.back()">
       <q-icon name="chevron left"/>
     </q-btn>
+    <portal-target name="default-header--left" slim></portal-target>
     <q-toolbar-title>
       <q-icon v-if="$root.meta.header && $root.meta.header.icon"
           :name="$root.meta.header.icon"/>
@@ -22,5 +23,6 @@
         {{ $root.meta.header.subtitle }}
       </span>
     </q-toolbar-title>
+    <portal-target name="default-header--right" slim></portal-target>
   </q-toolbar>
 </template>

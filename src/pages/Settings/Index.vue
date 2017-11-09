@@ -24,11 +24,13 @@ export default {
     QListHeader
   },
 
+  created () {
+    // Make sure the list of accounts has been loaded
+    this.$store.dispatch('accounts/ensureLoaded')
+  },
+
   computed: {
     accounts () {
-      if (this.$store.state.accounts.all.length === 0) {
-        this.$store.dispatch('accounts/fetch')
-      }
       return this.$store.state.accounts.all
     }
   },

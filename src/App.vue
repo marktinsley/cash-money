@@ -1,63 +1,16 @@
 <script>
   import {
-    QLayout,
-    QRouteTab,
-    QSelect,
-    QTabs,
-    QToolbar,
-    QToolbarTitle,
-    QTransition,
-    QSpinner
+    QLayout
   } from 'quasar'
 
   export default {
     components: {
-      QLayout,
-      QRouteTab,
-      QSelect,
-      QTabs,
-      QToolbar,
-      QToolbarTitle,
-      QTransition,
-      QSpinner
+      QLayout
     },
 
-    data () {
-      return {
-        selected: null
-      }
-    },
-
-    created () {
-      this.$store.dispatch('accounts/ensureLoaded')
-    },
-
-    computed: {
-      accountSelectLabel () {
-        if (this.$store.state.accounts.loading === true) {
-          return 'Loading...'
-        }
-        else if (this.$store.state.accounts.currentAccountId !== null) {
-          return 'Account'
-        }
-        else {
-          return 'Select Account'
-        }
-      },
-
-      accountNames () {
-        return this.$store.state.accounts.all.map(account => (
-          {label: account.name, value: account._id}
-        ))
-      },
-
-      selectedAccountId: {
-        get () {
-          return this.$store.state.accounts.currentAccountId
-        },
-        set (id) {
-          this.$store.commit('accounts/changeAccount', id)
-        }
+    document: {
+      head: {
+        title: 'Cash Money'
       }
     }
   }
@@ -66,30 +19,42 @@
 <template>
   <!-- Don't drop "q-app" class -->
   <div id="q-app">
-    <q-layout ref="appLayout" view="lHh LpR lFf" reveal>
-      <q-toolbar slot="header">
-        <q-toolbar-title>
-          <q-select dark color="white"
-                    :float-label="accountSelectLabel"
-                    placeholder="Select Account"
-                    align="center"
-                    v-model="selectedAccountId"
-                    :options="accountNames" />
-        </q-toolbar-title>
-        <q-spinner v-if="$store.state.accounts.loading" :size="40" color="white"></q-spinner>
-      </q-toolbar>
+    <q-layout ref="appLayout" view="lHh LpR lFf">
+      <!--
+        The "header", "navigation", and "footer" router views will be
+        rendered in corresponding slots by default but will be overridden by
+        any portals targeted here.
 
-      <q-transition enter="fadeIn" leave="fadeOut" group>
-        <router-view key="app-router-view"/>
-      </q-transition>
+        According to the portal-vue documentation we should be able to put the
+        <router-view/>'s directly in the <portal-target>'s', but there is some
+        kind of bug that occurs when putting a router-view in a portal-target.
+      -->
+      <div slot="header">
+        <portal-target name="header">
+        </portal-target>
+        <portal to="header">
+          <router-view name="header"/>
+        </portal>
+      </div>
 
-      <q-tabs align="center" slot="navigation">
-        <q-route-tab default slot="title" icon="home" label="Home" to="/" />
-        <q-route-tab slot="title" icon="lock" label="Accounts" to="/accounts" />
-        <q-route-tab slot="title" icon="settings" label="Settings" to="/settings" />
-      </q-tabs>
+      <div slot="navigation">
+        <portal-target name="navigation">
+        </portal-target>
+        <portal to="navigation">
+          <router-view name="navigation"/>
+        </portal>
+      </div>
+
+      <div slot="footer">
+        <portal-target name="footer">
+        </portal-target>
+        <portal to="footer">
+          <router-view name="footer"/>
+        </portal>
+      </div>
+
+      <!-- The default router view -->
+      <router-view/>
     </q-layout>
   </div>
 </template>
-
-<style></style>
